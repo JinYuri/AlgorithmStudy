@@ -1,0 +1,7 @@
+1. TIME : 214.600077 (ms) via Scanner Only
+2. TIME : 70.597856 (ms) via BufferedReader with String split
+3. TIME : 76.93713 (ms) via BufferedReader with StringTokenizer
+4. TIME : 67.667364 (ms) via Scanner with BufferedReader
+
+When using BufferedReader is faster than when using Scanner only.
+and case 4 is most simple to write. 
