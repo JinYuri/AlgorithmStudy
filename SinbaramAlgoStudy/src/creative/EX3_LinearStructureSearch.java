@@ -18,7 +18,7 @@ public class EX3_LinearStructureSearch {
 	}
 	
 	private static int solve(int start, int end){
-		if(start<0 || end<0 || start>end){
+		if(end-start < 0){
 			return -1;
 		}
 		int middle = (start+end)/2;

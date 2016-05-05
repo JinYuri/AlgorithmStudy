@@ -2,7 +2,7 @@ package creative;
 
 import java.util.Scanner;
 
-public class EX4_LowerBound {
+public class EX5_UpperBound {
 	private static int[] values = null;
 	private static int target = Integer.MAX_VALUE;
 	private static int n = Integer.MAX_VALUE;
@@ -22,7 +22,7 @@ public class EX4_LowerBound {
 			return end+1;
 		}
 		int middle = (start+end)/2;
-		if(values[middle] >= target){
+		if(values[middle] > target){
 			return solve(start, middle);
 		}
 		else{
