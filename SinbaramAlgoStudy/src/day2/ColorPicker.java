@@ -3,15 +3,17 @@ package day2;
 import java.util.Scanner;
 
 public class ColorPicker {
+	public static int[][] mem = null;
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		int n = sc.nextInt();
 		int k = sc.nextInt();
 		
+		mem = new int[n+1][k+1];
+		
 		sc.close();
 		
-		int result = getCaseCount(n, k);
-		System.out.println(result);
+		System.out.println(getCaseCount(n, k));
 		
 	}
 	
@@ -26,9 +28,12 @@ public class ColorPicker {
 			return 0;
 		}
 		
-		// 현재 것을 선택했을 때와 선택하지 않았을 때의 경우의 수를 구하여 더한다.
-		// 1,000,000,003로 나눈다?
-		int count = (getCaseCount(n-2, k-1) + getCaseCount(n-1, k))%1000000003;
-		return count;
+		if(mem [n][k] == 0){
+			// 현재 것을 선택했을 때와 선택하지 않았을 때의 경우의 수를 구하여 더한다.
+			// 1,000,000,003로 나눈다?
+			mem [n][k] = (getCaseCount(n-2, k-1) + getCaseCount(n-1, k))%1000000003;
+		}
+		
+		return mem [n][k];
 	}
 }
