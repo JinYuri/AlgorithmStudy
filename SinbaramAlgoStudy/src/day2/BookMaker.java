@@ -5,66 +5,52 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class BookMaker {
-	private static Map<String, Integer> mem = new HashMap<>();
+	private static Map<Integer, Integer> mem = new HashMap<>();
+	private static int[] files = null;
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		int t = sc.nextInt();
 		for(int tc=0; tc<t; ++tc){
 			int k = sc.nextInt();
-			int[] files = new int[k];
+			files = new int[k];
 			mem = new HashMap<>();
 			
 			for(int i=0; i<k; ++i){
 				files[i] = sc.nextInt();
 			}
-			System.out.println(getMinCost(files));
+			System.out.println(getMinCost(0, k-1));
 		}
 		sc.close();
 	}
 	
-	private static int getMinCost(int[] files){
-		String key = makeKey(files);
-		if(mem.containsKey(key)){
-			return mem.get(key);
-		}
+	private static int getMinCost(int start, int end){
 		int min = Integer.MAX_VALUE;
-		if(files.length == 2){
-			min = files[0] + files[1];
+		if(end - start == 0){
+			return 0;
+		}
+		else if(end - start == 1){
+			return files[start]+files[end];
 		}
 		else{
-			for(int i=0; i<files.length-1; ++i){
-				int cost = files[i] + files[i+1];
-				int temp = cost + getMinCost(makeNewFile(files, i, cost));
+			int sum = files[end];
+			int key = makeKey(start, end);
+			if(mem.containsKey(key)){
+				return mem.get(key);
+			}
+			for(int i=start; i<end; ++i){
+				int temp = getMinCost(start, i) + getMinCost(i+1, end);
 				if(min > temp){
 					min = temp;
 				}
+				sum += files[i];
 			}
+			int result = sum+min;
+			mem.put(key, result);
+			return result;
 		}
-		mem.put(key, min);
-		return min;
 	}
 	
-	private static int[] makeNewFile(int[] source, int idx, int cost){
-		int[] target = new int[source.length-1];
-		for(int i=0; i<source.length-1; ++i){
-			if(i == idx){
-				target[i] = cost;
-			}
-			else if(i < idx){
-				target[i] = source[i];
-			}
-			else{
-				target[i] = source[i+1];
-			}
-		}
-		return target;
-	}
-	
-	private static String makeKey(int[] files){
-		StringBuilder sb = new StringBuilder();
-		for(int i=0; i<files.length; ++i){
-			sb.append(files[i]).append("_");
-		}
-		return sb.toString();
+	private static int makeKey(int start, int end){
+		return start * 10000 + end;
 	}
 }
