@@ -63,7 +63,7 @@ public class BookMaker {
 	private static String makeKey(int[] files){
 		StringBuilder sb = new StringBuilder();
 		for(int i=0; i<files.length; ++i){
-			sb.append(files[i]+"_");
+			sb.append(files[i]).append("_");
 		}
 		return sb.toString();
 	}
