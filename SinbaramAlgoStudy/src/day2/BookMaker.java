@@ -51,6 +51,6 @@ public class BookMaker {
 	}
 	
 	private static int makeKey(int start, int end){
-		return start * 10000 + end;
+		return start * 1000 + end;
 	}
 }
