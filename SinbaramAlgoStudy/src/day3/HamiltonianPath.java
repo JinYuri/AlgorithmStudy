@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class HamiltonianPath {
 	private static int[][] costs = null;
-	private static int maxCost = 1200;
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
@@ -39,7 +38,11 @@ public class HamiltonianPath {
 		else{
 			for(int i=0; i<costs[n].length; ++i){
 				if(!mVisited[i].isVisited() && costs[n][i] != 0 && canComeback(i, mVisited)){
-					int temp = costs[n][i]+getMinCost(i, mVisited);
+					int cost = getMinCost(i, mVisited);
+					if(cost < 0){
+						continue;
+					}
+					int temp = costs[n][i]+cost;
 					if(min > temp){
 						min = temp;
 					}
@@ -47,7 +50,7 @@ public class HamiltonianPath {
 			}
 		}
 		if(min==Integer.MAX_VALUE){
-			min = maxCost;
+			min = -1;
 		}
 		visited[n].getMemMap().put(key, min);
 		return min;
