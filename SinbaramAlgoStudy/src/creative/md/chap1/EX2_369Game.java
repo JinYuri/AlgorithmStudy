@@ -1,4 +1,4 @@
-package creative;
+package creative.md.chap1;
 
 import java.util.Scanner;
 
