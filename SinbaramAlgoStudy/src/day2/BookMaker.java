@@ -24,16 +24,16 @@ public class BookMaker {
 	}
 	
 	private static int getMinCost(int start, int end){
-		int min = Integer.MAX_VALUE;
-		if(end - start == 0){
+		if(end - start <= 0){
 			return 0;
 		}
 		else if(end - start == 1){
 			return files[start]+files[end];
 		}
 		else{
+			int min = Integer.MAX_VALUE;
 			int sum = files[end];
-			int key = makeKey(start, end);
+			int key = start * 1000 + end;
 			if(mem.containsKey(key)){
 				return mem.get(key);
 			}
@@ -48,9 +48,5 @@ public class BookMaker {
 			mem.put(key, result);
 			return result;
 		}
-	}
-	
-	private static int makeKey(int start, int end){
-		return start * 1000 + end;
 	}
 }
