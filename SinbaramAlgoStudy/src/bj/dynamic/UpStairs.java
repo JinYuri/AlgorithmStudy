@@ -4,38 +4,48 @@ import java.util.Scanner;
 
 public class UpStairs {
 	private static int[] score = null;
-	private static int N = 0;
+	private static int[][] mem = null;
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
-		N = sc.nextInt();
-		score = new int[N];
+		int n = sc.nextInt();
+		score = new int[n];
+		mem = new int[n][2];
 		
-		for(int i=0; i<N; ++i){
+		for(int i=0; i<n; ++i){
 			score[i] = sc.nextInt();
 		}
-		System.out.println(getMaxScore(0,0));
+		System.out.println(getMaxScore(n-1,0));
 		sc.close();
 	}
 	
 	private static int getMaxScore(int n, int depth){
+		if(mem[n][depth] != 0){
+			return mem[n][depth];
+		}
 		int max = Integer.MIN_VALUE;
-		if((N-n == 2) || (N-n == 3 && depth >=1)){
-			max = score[n] + score[N-1];
+		// 처음 도착
+		// 두번째인데 이미 두번 연속이면
+		if((n==0) || (n==1 && depth == 1)){
+			max = score[n];
 		}
-		else if(depth == 2){
-			// 다다음
-			max = score[n]+getMaxScore(n+2, 1);
+		else if(n==1){
+			max = score[n]+getMaxScore(n-1, depth+1);
 		}
+		// 이미 2번 연속이라 전전으로
+		else if(depth == 1){
+			max = score[n]+getMaxScore(n-2, 0);
+		}
+		// 전/전전 비교해서 큰걸로
 		else{
-			// 다음/다다음
-			max = getMaxScore(n+2, 1);
-			int temp = getMaxScore(n+1, ++depth);
+			max = getMaxScore(n-2, 0);
+			int temp = getMaxScore(n-1, depth+1);
 			if(temp > max){
 				max = temp;
 			}
 			max += score[n];
 		}
+		mem[n][depth] = max;
 		return max;
 	}
 }
