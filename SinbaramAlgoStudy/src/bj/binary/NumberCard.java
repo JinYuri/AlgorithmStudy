@@ -1,30 +1,45 @@
 package bj.binary;
 
-import java.util.HashSet;
+import java.io.BufferedInputStream;
+import java.util.Arrays;
 import java.util.Scanner;
-import java.util.Set;
 
 public class NumberCard {
-	private static Set<Integer> cards = null;
+	private static int[] cards = null;
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(new BufferedInputStream(System.in));
 		
 		int n = sc.nextInt();
-		cards = new HashSet<>();
+		cards = new int[n];
 		for(int i=0; i<n; ++i){
-			cards.add(sc.nextInt());
+			cards[i] = sc.nextInt();
 		}
+		Arrays.sort(cards);
 		
 		int k = sc.nextInt();
+		StringBuilder sb = new StringBuilder();
 		for(int i=0; i<k; ++i){
-			if(cards.contains(sc.nextInt())){
-				System.out.print(1);
-			}
-			else{
-				System.out.print(0);
-			}
-			System.out.print(" ");
+			sb.append(findCard(sc.nextInt(), 0, n-1)).append(" ");
 		}
+		System.out.print(sb.toString());
 		sc.close();
+	}
+	
+	private static int findCard(int m, int start, int end){
+		if(start>end){
+			return 0;
+		}
+		int idx = (start+end)/2;
+		int temp = cards[idx];
+		if(temp == m){
+			return 1;
+		}
+		else if(temp > m){
+			return findCard(m, start, idx-1);
+		}
+		else{
+			return findCard(m, idx+1, end);
+		}
+		
 	}
 }
