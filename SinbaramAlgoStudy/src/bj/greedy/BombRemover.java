@@ -1,9 +1,7 @@
 package bj.greedy;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class BombRemover {
@@ -22,7 +20,7 @@ public class BombRemover {
 			for(int j=0; j<m; ++j){
 				map[i][j] = sc.nextInt();
 				if(map[i][j]==0){
-					candidate.add(i*100+j);
+					candidate.add(i*1000+j);
 				}
 			}
 		}
@@ -32,7 +30,9 @@ public class BombRemover {
 		
 		System.out.println(result.size());
 		for(int val:result){
-			System.out.println(val/100+" "+val%100);
+			int i = (val/1000)+1;
+			int j = (val%1000)+1;
+			System.out.println(i+" "+j);
 		}
 		
 		sc.close();
@@ -41,34 +41,42 @@ public class BombRemover {
 	private static List<Integer> checkDestoryBuildings(List<Integer> candidate){
 		List<Integer> result = new ArrayList<>();
 		for(int val:candidate){
-			int i=val/100;
-			int j=val%100;
+			int i=val/1000;
+			int j=val%1000;
 			
 			boolean isDestoryed = false;
 			
 			for (int k=i+1; k<=(i+l); ++k) {
-				if (k>=n || map[k][j]>0) {
+				if (k>=n)
+					break;
+				if (map[k][j]>0) {
 					if(map[k][j]==1)
 						isDestoryed = true;
 					break;
 				}
 			}
 			for (int k=i-1; k>=(i-l); --k) {
-				if (k<0 || map[k][j]>0) {
+				if(k<0)
+					break;
+				if (map[k][j]>0) {
 					if(map[k][j]==1)
 						isDestoryed = true;
 					break;
 				}
 			}
 			for (int k=j+1; k<=(j+l); ++k) {
-				if (k>=m || map[i][k]>0) {
+				if(k>=m)
+					break;
+				if (map[i][k]>0) {
 					if(map[i][k]==1)
 						isDestoryed = true;
 					break;
 				}
 			}
 			for (int k=j-1; k>=(j-l); --k) {
-				if (k<0 || map[i][k]>0) {
+				if (k<0)
+					break;
+				if (map[i][k]>0) {
 					if(map[i][k]==1)
 						isDestoryed = true;
 					break;
@@ -86,8 +94,8 @@ public class BombRemover {
 		int[][] areaMap = new int[n][m];
 		List<Integer> result = new ArrayList<>();
 		for(int val:filteredList){
-			int i=val/100;
-			int j=val%100;
+			int i=val/1000;
+			int j=val%1000;
 			
 			for (int k=i+1; k<=(i+l); ++k) {
 				if (k>=n || map[k][j]>0) {
@@ -120,10 +128,10 @@ public class BombRemover {
 		}
 		
 		for(int val:filteredList){
-			int i=val/100;
-			int j=val%100;
+			int i=val/1000;
+			int j=val%1000;
 			
-			if((i==n-1 || areaMap[i+1][j]<=1) && (j==m-1 || areaMap[i][j+1]<=1) && (i==0 || areaMap[i-1][j]<=1) && (j==0 || areaMap[i][j-1]<=1)){
+			if((i!=n-1 && areaMap[i+1][j]==1) || (j!=m-1 && areaMap[i][j+1]==1) || (i!=0 && areaMap[i-1][j]==1) || (j!=0 && areaMap[i][j-1]==1)){
 				result.add(val);
 			}
 			
