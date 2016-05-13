@@ -1,8 +1,11 @@
 package bj.greedy;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class BombRemover {
 //https://www.acmicpc.net/problem/2345
@@ -10,21 +13,23 @@ public class BombRemover {
 	private static int l = Integer.MAX_VALUE;
 	private static int n = Integer.MAX_VALUE;
 	private static int m = Integer.MAX_VALUE;
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		n = sc.nextInt();
-		m = sc.nextInt();
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
 		map = new int[n][m];
 		List<Integer> candidate = new ArrayList<>();
 		for(int i=0; i<n; ++i){
+			st = new StringTokenizer(br.readLine());
 			for(int j=0; j<m; ++j){
-				map[i][j] = sc.nextInt();
+				map[i][j] = Integer.parseInt(st.nextToken());
 				if(map[i][j]==0){
 					candidate.add(i*1000+j);
 				}
 			}
 		}
-		l = sc.nextInt();
+		l = Integer.parseInt(br.readLine());
 		List<Integer> filteredList = checkDestoryBuildings(candidate);
 		List<Integer> result = markBombArea(filteredList);
 		
@@ -34,8 +39,6 @@ public class BombRemover {
 			int j = (val%1000)+1;
 			System.out.println(i+" "+j);
 		}
-		
-		sc.close();
 	}
 	// 건물을 안부수는 곳만 걸러내기
 	private static List<Integer> checkDestoryBuildings(List<Integer> candidate){
@@ -55,31 +58,37 @@ public class BombRemover {
 					break;
 				}
 			}
-			for (int k=i-1; k>=(i-l); --k) {
-				if(k<0)
-					break;
-				if (map[k][j]>0) {
-					if(map[k][j]==1)
-						isDestoryed = true;
-					break;
+			if(!isDestoryed){
+				for (int k=i-1; k>=(i-l); --k) {
+					if(k<0)
+						break;
+					if (map[k][j]>0) {
+						if(map[k][j]==1)
+							isDestoryed = true;
+						break;
+					}
 				}
 			}
-			for (int k=j+1; k<=(j+l); ++k) {
-				if(k>=m)
-					break;
-				if (map[i][k]>0) {
-					if(map[i][k]==1)
-						isDestoryed = true;
-					break;
+			if(!isDestoryed){
+				for (int k=j+1; k<=(j+l); ++k) {
+					if(k>=m)
+						break;
+					if (map[i][k]>0) {
+						if(map[i][k]==1)
+							isDestoryed = true;
+						break;
+					}
 				}
 			}
-			for (int k=j-1; k>=(j-l); --k) {
-				if (k<0)
-					break;
-				if (map[i][k]>0) {
-					if(map[i][k]==1)
-						isDestoryed = true;
-					break;
+			if(!isDestoryed){
+				for (int k=j-1; k>=(j-l); --k) {
+					if (k<0)
+						break;
+					if (map[i][k]>0) {
+						if(map[i][k]==1)
+							isDestoryed = true;
+						break;
+					}
 				}
 			}
 			if(!isDestoryed){
@@ -96,7 +105,7 @@ public class BombRemover {
 		for(int val:filteredList){
 			int i=val/1000;
 			int j=val%1000;
-			
+			++areaMap[i][j];
 			for (int k=i+1; k<=(i+l); ++k) {
 				if (k>=n || map[k][j]>0) {
 					break;
@@ -130,11 +139,7 @@ public class BombRemover {
 		for(int val:filteredList){
 			int i=val/1000;
 			int j=val%1000;
-			
-			if((i!=n-1 && areaMap[i+1][j]==1) || (j!=m-1 && areaMap[i][j+1]==1) || (i!=0 && areaMap[i-1][j]==1) || (j!=0 && areaMap[i][j-1]==1)){
-				result.add(val);
-			}
-			
+			// TODO
 		}
 		
 		return result;
