@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -33,10 +31,11 @@ public class TreeWeight {
 			if(map[m] == null){
 				map[m] = new Vector<>(1, 1);
 			}
-			map[n].add(m);
-			map[n].add(w);
-			map[m].add(n);
-			map[m].add(w);
+			
+			map[n].addElement(m);
+			map[n].addElement(w);
+			map[m].addElement(n);
+			map[m].addElement(w);
 			
 		}
 		// 모든경로 구하기
@@ -54,12 +53,14 @@ public class TreeWeight {
         visited[n] = 1;
         if(map[n] != null){
         	for(int i=0; i<map[n].size(); i+=2){
-        		if(visited[map[n].get(i)] != 1){
-        			result.add(map[n].get(i+1));
-        			List<Integer> temp = getWieght(map[n].get(i));
+        		if(visited[map[n].elementAt(i)] != 1){
+        			int idx = map[n].elementAt(i);
+        			int weight = map[n].elementAt(i+1);
+        			result.add(weight);
+        			List<Integer> temp = getWieght(idx);
         			for(int val : temp){
         				result.add(val);
-        				result.add((map[n].get(i+1)*val)%1000000007);
+        				result.add((weight*val)%1000000007);
         			}
         		}
         	}
