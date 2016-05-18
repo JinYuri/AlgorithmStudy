@@ -20,25 +20,18 @@ public class PageSwitcher {
 			int to = sc.nextInt()-1;
 			count = Math.max(count, from);
 			if(!gMap.containsKey(from)){
-				Map<Integer, Integer> map = new HashMap<>();
-				map.put(to, 1);
-				gMap.put(from, map);
+				gMap.put(from, new HashMap<Integer, Integer>());
 			}
-			else{
-				gMap.get(from).put(to, 1);
-			}
+			gMap.get(from).put(to, 1);
 		}
-		++count;
-		visited = new int[count];
+		visited = new int[++count];
 		// 짧은 페이지 클릭 횟수의 합
 		int total = 0;
 		
 		for(int i=0; i<count; ++i){
 			for(int j=0; j<count; ++j){
 				if(i != j){
-					int temp = getBestPath(i, j);
-					total += temp;
-					System.out.println(temp);
+					total += getMinPath(i, j);
 				}
 			}
 		}
@@ -48,30 +41,38 @@ public class PageSwitcher {
 		sc.close();
 	}
 	
-	private static int getBestPath(int from, int to){
+	private static int getMinPath(int from, int to){
 		visited[from] = 1;
 		int min = Integer.MAX_VALUE;
+		boolean isSubAnswer = false;
 		Map<Integer, Integer> map = gMap.get(from);
-		if(!map.containsKey(to)){
+		if(map.containsKey(to)){
+			min = map.get(to);
+		}else{
 			Iterator<Entry<Integer, Integer>> iter = map.entrySet().iterator();
 			while(iter.hasNext()){
 				Entry<Integer, Integer> temp = iter.next();
 				if(visited[temp.getKey()] != 1){
-					int tempValue = getBestPath(temp.getKey(), to);
+					int tempValue = getMinPath(temp.getKey(), to);
 					if(tempValue > 0){
 						min = Math.min(min, tempValue+temp.getValue());
 					}
 				}
+				else{
+					isSubAnswer = true;
+				}
 			}
 			// 갈 곳 없음
 			if(min == Integer.MAX_VALUE){
-				visited[from] = 0;
-				return -1;
+				min = -1;
 			}
-			map.put(to, min);
+			// 지나갔던 길이라 더 좋은 답안이 있을 경우 저장하지 않음
+			if(!isSubAnswer){
+				map.put(to, min);
+			}
 		}
 		visited[from] = 0;
-		return map.get(to);
+		return min;
 	}
 	
 	private static String getResult(int total, int pairCount){
