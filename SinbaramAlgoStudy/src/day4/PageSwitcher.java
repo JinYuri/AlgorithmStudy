@@ -1,23 +1,28 @@
 package day4;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class PageSwitcher {
 	private static Map<Integer, Map<Integer, Integer>> gMap = new HashMap<>();
 	private static int[] visited = null;
 	private static int count = 0;
 	private static int total = 0;
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(br.readLine());
+		StringTokenizer st;
 		for(int i=0; i<n; ++i){
-			int from = sc.nextInt()-1;
-			int to = sc.nextInt()-1;
+			st = new StringTokenizer(br.readLine());
+			int from = Integer.parseInt(st.nextToken())-1;
+			int to = Integer.parseInt(st.nextToken())-1;
 			count = Math.max(count, from);
 			if(!gMap.containsKey(from)){
 				gMap.put(from, new HashMap<Integer, Integer>());
@@ -38,7 +43,6 @@ public class PageSwitcher {
 		// 쌍 갯수를 구해서 평균 클릭 횟수 구하기
 		int pairCount = count*(count-1);
 		System.out.println(getResult(total, pairCount));
-		sc.close();
 	}
 	
 	private static int getMinPath(int from, int to){
@@ -66,8 +70,8 @@ public class PageSwitcher {
 			if(min == Integer.MAX_VALUE){
 				min = -1;
 			}
-			// 지나갔던 길이라 더 좋은 답안이 있을 경우 저장하지 않음
-			if(!isSubAnswer){
+			// 더 좋은 답안이 있을 수도 
+			else if(!isSubAnswer){
 				map.put(to, min);
 			}
 		}
