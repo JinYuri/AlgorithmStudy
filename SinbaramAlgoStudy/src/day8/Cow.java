@@ -37,7 +37,7 @@ public class Cow {
 		Iterator<Integer> iter = startSet.iterator();
 		while(iter.hasNext()){
 			int i = iter.next();
-			int tempCost = find(i);
+			int tempCost = find(i, result);
 			if(tempCost > 0 && tempCost < result){
 				result = tempCost;
 				index = i;
@@ -47,7 +47,7 @@ public class Cow {
 		br.close();
 	}
 	
-	private static int find(int from){
+	private static int find(int from, int cost){
 		if(map[from][TO] > 0)	return map[from][TO];
 		String key = makeKey(from);
         if(mem.containsKey(key))	return mem.get(key);
@@ -56,8 +56,8 @@ public class Cow {
         int minCost = Integer.MAX_VALUE;
         
     	for(int i=0; i<map[from].length; i++){
-    		if(visited[i] != 1 && map[from][i] > 0){
-    			int tempCost = find(i);
+    		if(visited[i] != 1 && map[from][i] > 0 && map[from][i] < cost){
+    			int tempCost = find(i, cost-map[from][i]);
     			if(tempCost > 0)	minCost = Math.min(minCost, tempCost+map[from][i]);
     		}
     	}
