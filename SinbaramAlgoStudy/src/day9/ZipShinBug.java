@@ -14,26 +14,41 @@ public class ZipShinBug {
 		d = sc.nextInt(); //태어나고 d일 후 사망 ㅠㅠ
 		int N = sc.nextInt(); //구하고자 하는 일자
 		
-		System.out.println(getCount(0, N+1));
+		System.out.println(getCount(1, N));
 		sc.close();
 	}
 	
 	private static int getCount(int aliveDays, int leftDays){
-		// 사망
-		if(aliveDays >= d) {
-			return 0;
+		// 성숙하지 않음
+		if(aliveDays < a){
+			// 구하는 날까지 성숙하지 않으면
+			if(leftDays < a){
+				return 1;
+			}
+			// 성숙하는 날로 점프
+			else{
+				return getCount(a, leftDays-a+aliveDays);
+			}
 		}
-		// 그날이 왔다
-		else if(leftDays <= 0){
-			return 1;
-		}
-		// 성숙하지 않거나 복제 그만
-		else if(aliveDays < a || aliveDays >= b){
-			return getCount(++aliveDays, --leftDays);
+		//복제 그만
+		else if(aliveDays >= b){
+			// 구하는 날까지 살아 있다면
+			if(leftDays <= d-aliveDays){
+				return 1;
+			}
+			else{
+				return 0;
+			}	
 		}
 		// 성숙해서 복제 가능
 		else{
-			return getCount(++aliveDays, --leftDays)+getCount(0, --leftDays);
+			// 그날이 왔다
+			if(leftDays <= 0){
+				return 1;
+			} 
+			else{
+				return getCount(++aliveDays, leftDays-1)+getCount(0, leftDays-1);
+			}
 		}
 	}
 }
