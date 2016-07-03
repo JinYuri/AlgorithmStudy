@@ -1,12 +1,9 @@
 package day9;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
-public class Coin {
+public class CopyOfCoin {
 	private static int[] coinMap = null;
-	private static Map<Integer, Integer> mem = new HashMap<>();
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
@@ -30,9 +27,6 @@ public class Coin {
 	}
 	
 	private static int getCoinCount(int w){
-		if(mem.containsKey(w)){
-			return mem.get(w);
-		}
 		if(w == 0){
 			return 0;
 		}
@@ -52,7 +46,6 @@ public class Coin {
 			result = -1;
 		}
 		
-		mem.put(w, result);
 		return result;
 	}
 }
