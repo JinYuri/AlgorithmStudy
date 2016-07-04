@@ -2,7 +2,7 @@ package day9;
 
 import java.util.Scanner;
 
-public class ZipShinBug {
+public class Copy_2_of_ZipShinBug {
 	private static int a = 0;
 	private static int b = 0;
 	private static int d = 0;
