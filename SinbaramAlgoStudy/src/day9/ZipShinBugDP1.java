@@ -1,8 +1,10 @@
 package day9;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
-public class Copy_2_of_ZipShinBug {
+public class ZipShinBugDP1 {
 	private static int a = 0;
 	private static int b = 0;
 	private static int d = 0;
@@ -13,7 +15,7 @@ public class Copy_2_of_ZipShinBug {
 		b = sc.nextInt(); //태어나고 b일 후 복제 stop
 		d = sc.nextInt(); //태어나고 d일 후 사망 ㅠㅠ
 		int N = sc.nextInt(); //구하고자 하는 일자
-		System.out.println(getCount(1, N)%1000);
+		System.out.println(getCount(1, N));
 		sc.close();
 	}
 	
@@ -27,7 +29,7 @@ public class Copy_2_of_ZipShinBug {
 			}
 			// 성숙하는 날로 점프
 			else{
-				result = getCount(a, leftDays-a+aliveDays)%1000;
+				result = getCount(a, leftDays-a+aliveDays);
 			}
 		}
 		//복제 그만
@@ -47,10 +49,9 @@ public class Copy_2_of_ZipShinBug {
 				result = 2;
 			}
 			else{
-				result = getCount(aliveDays+1, leftDays-1)%1000+getCount(0, leftDays)%1000;
-				System.out.println(aliveDays + " " + leftDays + " " + result);
+				result = getCount(aliveDays+1, leftDays-1)+getCount(0, leftDays);
 			}
 		}
-		return result;
+		return result%1000;
 	}
 }
